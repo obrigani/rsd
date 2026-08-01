@@ -1,0 +1,108 @@
+#!/usr/bin/env bash
+
+export PREFIX="$HOME/opt/cross"
+export SOURCE_DIR="$HOME/src"
+export BUILD_DIR="$HOME/src/build"
+export HOST="x86_64-pc-linux-gnu"
+
+export TARGET=i686-elf
+export PATH="$PREFIX/bin:$PATH"
+
+concurrency=`nproc`
+
+binutils_version="2.47"
+gcc_version="16.1.0"
+
+binutils_src_gz="https://ftp.gnu.org/gnu/binutils/binutils-${binutils_version}.tar.gz"
+gcc_src_gz="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/gcc-${gcc_version}.tar.gz"
+
+binutils_dir="binutils-${binutils_version}"
+gcc_dir="gcc-${gcc_version}"
+
+if [[ ! -d "${BUILD_DIR}" ]]; then
+  mkdir -p "${BUILD_DIR}" || exit 1
+fi
+
+if [[ ! -d "${PREFIX}" ]]; then
+  mkdir -p "${PREFIX}" || exit 1
+fi
+
+cd "${SOURCE_DIR}" || exit 1
+
+# Get sources
+
+if [[ ! -d "${SOURCE_DIR}/${binutils_dir}" ]]; then
+  curl -L ${binutils_src_gz} | gunzip | tar -xf -
+fi
+
+if [[ ! -d "${SOURCE_DIR}/${gcc_dir}" ]]; then
+  curl -L ${gcc_src_gz} | gunzip | tar -xf -
+fi
+
+cd "${BUILD_DIR}" || exit 1
+
+# Compile binutils
+
+if [[ ! -d "${BUILD_DIR}/${binutils_dir}" ]]; then
+  mkdir "${BUILD_DIR}/${binutils_dir}" || exit 1
+fi
+
+cd "${BUILD_DIR}/${binutils_dir}" || exit 1
+
+if [[ ! -f "${PREFIX}/bin/.rsd-compiled-binutils" ]]; then
+  
+  ${SOURCE_DIR}/${binutils_dir}/configure \
+    --target="${TARGET}"          \
+    --prefix="${PREFIX}"          \
+    --host="${HOST}"              \
+    --disable-nls                 \
+    --disable-multilib            \
+    --disable-shared              \
+    --disable-werror              \
+    --enable-default-execstack=no \
+    --with-sysroot || exit 1
+
+  make configure-host || exit 1
+  make -j${concurrency} || exit 1
+  make -j${concurrency} install || exit 1
+
+  touch "${PREFIX}/bin/.rsd-compiled-binutils"
+fi
+
+if [[ -f "${PREFIX}/bin/.rsd-compiled-binutils" ]]; then
+  echo "Already built a binutils version for the cross-compiler! If you would like to recompile, run 'rm ${PREFIX}/bin/.rsd-compiled-binutils'"
+fi
+
+# Compile GCC
+
+if [[ ! -d "${BUILD_DIR}/${gcc_dir}" ]]; then
+  mkdir "${BUILD_DIR}/${gcc_dir}" || exit 1
+fi
+
+cd "${BUILD_DIR}/${gcc_dir}"
+
+if [[ ! -f "${PREFIX}/bin/.rsd-compiled-gcc" ]]; then
+
+  ${SOURCE_DIR}/${gcc_dir}/configure \
+    --target="${TARGET}"   \
+    --prefix="${PREFIX}"   \
+    --enable-languages="c" \
+    --disable-multilib     \
+    --disable-shared       \
+    --disable-nls          \
+    --without-headers      \
+    --enable-initfini-array || exit 1
+
+  make -j${concurrency} all-gcc || exit 1
+  make -j${concurrency} all-target-libgcc || exit 1
+  make -j${concurrency} install-gcc || exit 1
+  make -j${concurrency} install-target-libgcc || exit 1
+
+  touch "${PREFIX}/bin/.rsd-compiled-gcc"
+fi
+
+if [[ -f "${PREFIX}/bin/.rsd-compiled-gcc" ]]; then
+  echo "Already built a gcc cross-compiler! If you would like to recompile, run 'rm ${PREFIX}/bin/.rsd-compiled-gcc'"
+fi
+
+echo "YAY! Cross-compiler built successfully! To use the new commands, app '${PREFIX}/bin' to your PATH"
