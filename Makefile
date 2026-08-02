@@ -5,7 +5,7 @@
 
 override IMAGE_NAME := rsd
 
-QEMUFLAGS := "-vga virtio"
+QEMUFLAGS := -vga virtio
 
 HOST_CC := cc
 HOST_CFLAGS := -g -O2 -pipe
@@ -17,9 +17,9 @@ all: $(IMAGE_NAME)-i386-limine.iso
 	@echo "$(IMAGE_NAME)-i386-limine.iso built successfully"
 
 .PHONY: run
-run: $(IMAGE_NAME)-386-limine.iso
+run: $(IMAGE_NAME)-i386-limine.iso
 	qemu-system-i386 -cdrom $(IMAGE_NAME)-i386-limine.iso \
-					 $(QEMUFLAGS)
+							$(QEMUFLAGS)
 
 limine-binary/.downloaded:
 	curl -L https://github.com/Limine-Bootloader/Limine/releases/latest/download/limine-binary.tar.gz | gunzip | tar -xf -
