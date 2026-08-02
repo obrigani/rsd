@@ -1,0 +1,5 @@
+config.mk
+.cache/
+sysroot/
+limine-binary/
+*.iso

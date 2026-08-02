@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Copyright (C) 2026 obrigani team
+# SPDX-License-Identifier: GPL-3.0-only
+# build-crosscompiler - a script to build the gcc compiler with recommended compiler settings 
+
 export PREFIX="$HOME/opt/cross"
 export SOURCE_DIR="$HOME/src"
 export BUILD_DIR="$HOME/src/build"
@@ -19,6 +23,14 @@ gcc_src_gz="https://ftp.gnu.org/gnu/gcc/gcc-${gcc_version}/gcc-${gcc_version}.ta
 binutils_dir="binutils-${binutils_version}"
 gcc_dir="gcc-${gcc_version}"
 
+
+if [[ -f "${PREFIX}/bin/.rsd-compiled-gcc" && "${PREFIX}/bin/.rsd-compiled-binutils" ]]; then
+  echo "You already have the cross-compiler built! Delete the following files to rebuild"
+  echo "'${PREFIX}/bin/.rsd-compiled-gcc'"
+  echo "'${PREFIX}/bin/.rsd-compiled-binutils'"
+  exit
+fi
+
 if [[ ! -d "${BUILD_DIR}" ]]; then
   mkdir -p "${BUILD_DIR}" || exit 1
 fi
@@ -32,11 +44,15 @@ cd "${SOURCE_DIR}" || exit 1
 # Get sources
 
 if [[ ! -d "${SOURCE_DIR}/${binutils_dir}" ]]; then
-  curl -L ${binutils_src_gz} | gunzip | tar -xf -
+  if [[ ! -f "${PREFIX}/bin/rsd-compiled-binutils" ]]; then
+    curl -L ${binutils_src_gz} | gunzip | tar -xf -
+  fi
 fi
 
 if [[ ! -d "${SOURCE_DIR}/${gcc_dir}" ]]; then
-  curl -L ${gcc_src_gz} | gunzip | tar -xf -
+  if [[ ! -f "${PREFIX}/bin/rsd-compiled-gcc" ]]; then
+    curl -L ${gcc_src_gz} | gunzip | tar -xf -
+  fi
 fi
 
 cd "${BUILD_DIR}" || exit 1
@@ -44,7 +60,7 @@ cd "${BUILD_DIR}" || exit 1
 # Compile binutils
 
 if [[ ! -d "${BUILD_DIR}/${binutils_dir}" ]]; then
-  mkdir "${BUILD_DIR}/${binutils_dir}" || exit 1
+  mkdir -p "${BUILD_DIR}/${binutils_dir}" || exit 1
 fi
 
 cd "${BUILD_DIR}/${binutils_dir}" || exit 1
@@ -69,14 +85,10 @@ if [[ ! -f "${PREFIX}/bin/.rsd-compiled-binutils" ]]; then
   touch "${PREFIX}/bin/.rsd-compiled-binutils"
 fi
 
-if [[ -f "${PREFIX}/bin/.rsd-compiled-binutils" ]]; then
-  echo "Already built a binutils version for the cross-compiler! If you would like to recompile, run 'rm ${PREFIX}/bin/.rsd-compiled-binutils'"
-fi
-
 # Compile GCC
 
 if [[ ! -d "${BUILD_DIR}/${gcc_dir}" ]]; then
-  mkdir "${BUILD_DIR}/${gcc_dir}" || exit 1
+  mkdir -p "${BUILD_DIR}/${gcc_dir}" || exit 1
 fi
 
 cd "${BUILD_DIR}/${gcc_dir}"
@@ -99,10 +111,6 @@ if [[ ! -f "${PREFIX}/bin/.rsd-compiled-gcc" ]]; then
   make -j${concurrency} install-target-libgcc || exit 1
 
   touch "${PREFIX}/bin/.rsd-compiled-gcc"
-fi
-
-if [[ -f "${PREFIX}/bin/.rsd-compiled-gcc" ]]; then
-  echo "Already built a gcc cross-compiler! If you would like to recompile, run 'rm ${PREFIX}/bin/.rsd-compiled-gcc'"
 fi
 
 echo "YAY! Cross-compiler built successfully! To use the new commands, app '${PREFIX}/bin' to your PATH"
