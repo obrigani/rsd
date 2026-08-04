@@ -57,10 +57,11 @@ $(IMAGE_NAME)-i386-limine.iso: sysroot/boot/kernel.elf limine-binary/.built
 .PHONY: clean
 clean:
 	make -C kernel clean
+	rm -fr $(SYSROOT)
 
 .PHONY: distclean
 distclean: 
-	rm -fr *.iso $(SYSROOT) limine-binary
+	rm -fr *.iso limine-binary
 	
 .PHONY: bear
 bear: clean 

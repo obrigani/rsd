@@ -1,6 +1,10 @@
 ; Copyright (C) 2026 obrigani team
 ; SPDX-License-Identifier: GPL-3.0-only
 
+; =================================================================================== 
+; boot.asm - Bootstrap for the loading of the kernel through multiboot 1 protocol
+; =================================================================================== 
+
 bits 32
 
 ; Multiboot header constants

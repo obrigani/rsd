@@ -2,7 +2,10 @@
 
 # Copyright (C) 2026 obrigani team
 # SPDX-License-Identifier: GPL-3.0-only
+
+# =================================================================================== 
 # build-crosscompiler - a script to build the gcc compiler with recommended compiler settings 
+# =================================================================================== 
 
 export PREFIX="$HOME/opt/cross"
 export SOURCE_DIR="$HOME/src"
