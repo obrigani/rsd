@@ -1,3 +1,6 @@
+// Copyright (C) 2026 obrigani team
+// SPDX-License-Identifier: GPL-3.0-only
+
 #include "common.h"
 #include <stdlib.h>
 #include <stdio.h>
