@@ -2,15 +2,16 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 /* =================================================================================== * 
- * tty.h - see tty.c                                                                   *
+ * string.h - Implementation of the standard C header
  * =================================================================================== */
 
 #pragma once
 
-#include <stdint.h>
+#include <sys/cdefs.h>
 #include <stddef.h>
 
-// size_t strlen(const char* str);
-void init_term(void);
-void term_write(const char* data, size_t size);
-void term_print(const char* data);
+int memcpm(const void*, const void*, size_t);
+void* memcpy(void* __restrict, const void* __restrict, size_t);
+void* memmove(void*, const void*, size_t);
+void* memset(void*, int, size_t);
+size_t strlen(const char*);

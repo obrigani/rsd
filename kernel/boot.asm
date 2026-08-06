@@ -5,6 +5,7 @@
 ; boot.asm - Bootstrap for the loading of the kernel through multiboot 1 protocol
 ; =================================================================================== 
 
+.intel_syntax
 bits 32
 
 ; Multiboot header constants

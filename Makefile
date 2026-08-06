@@ -1,6 +1,9 @@
 # Copyright (C) 2026 obrigani team
 # SPDX-License-Identifier: GPL-3.0-only
 
+include config.def.mk
+-include config.mk
+
 .SUFFIXES:
 
 override IMAGE_NAME := rsd
@@ -9,8 +12,6 @@ QEMUFLAGS := -vga virtio
 
 HOST_CC := cc
 HOST_CFLAGS := -g -O2 -pipe
-
-include config.def.mk
 
 .PHONY: all
 all: $(IMAGE_NAME)-i386-limine.iso
@@ -30,7 +31,9 @@ limine-binary/.built: limine-binary/.downloaded
 	touch $@
 
 sysroot/boot/kernel.elf:
-	make DESTDIR="$(SYSROOT)" -I $(PWD) -C kernel install
+	make DESTDIR="$(SYSROOT)" -I$(PWD) -C kernel install-headers
+	make DESTDIR="$(SYSROOT)" -I$(PWD) -C libk install
+	make DESTDIR="$(SYSROOT)" -I$(PWD) -C kernel install
 	
 $(IMAGE_NAME)-i386-limine.iso: sysroot/boot/kernel.elf limine-binary/.built
 	mkdir -p isodir
@@ -56,7 +59,7 @@ $(IMAGE_NAME)-i386-limine.iso: sysroot/boot/kernel.elf limine-binary/.built
 
 .PHONY: clean
 clean:
-	make -C kernel clean
+	make -I$(PWD) -C kernel clean
 	rm -fr $(SYSROOT)
 
 .PHONY: distclean
@@ -64,5 +67,7 @@ distclean:
 	rm -fr *.iso limine-binary
 	
 .PHONY: bear
-bear: clean 
-	bear --output kernel/compile_commands.json -- make -C kernel
+bear: clean
+	make DESTDIR="$(SYSROOT)" -I$(PWD) -C kernel install-headers
+	bear --output libk/compile_commands.json -- make DESTDIR="$(SYSROOT)" -I$(PWD) -C libk install
+	bear --output kernel/compile_commands.json -- make DESTDIR="$(SYSROOT)" -I$(PWD) -C kernel 

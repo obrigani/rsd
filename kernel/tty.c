@@ -9,6 +9,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "vga.h"
 
@@ -17,13 +18,13 @@ size_t term_column;
 uint8_t term_color;
 uint16_t* term_buffer = (uint16_t*)VGA_MEMORY;
 
-size_t strlen(const char* str) 
-{
-	size_t len = 0;
-	while(str[len])
-		len++;
-	return len;
-}
+// size_t strlen(const char* str) 
+// {
+// 	size_t len = 0;
+// 	while(str[len])
+// 		len++;
+// 	return len;
+// }
 
 void init_term(void) 
 {

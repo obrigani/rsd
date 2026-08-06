@@ -1,12 +1,32 @@
 # Copyright (C) 2026 obrigani team
 # SPDX-License-Identifier: GPL-3.0-only
-# config.def.mk - The default config options for building the OS
-# To use custom configs, copy this file and name it config.mk and then run the make command as `make CONFIG=config.mk`
+# To use custom configs, make the config.mk file in root directory and change the values that you need.
 
-export PREFIX=/usr
-export EXEC_PREFIX=$(PREFIX)
-export BOOTDIR=/boot
-export LIBDIR=$(EXEC_PREFIX)/lib
-export INCLUDEDIR=$(PREFIX)/include
+CC := i686-elf-gcc
+AR := i686-elf-ar
+LD := i686-elf-ld
 
-export SYSROOT="$(PWD)/sysroot"
+CFLAGS := -g \
+		  -O2 \
+		  -pipe \
+		  -Wall \
+		  -Wextra \
+		  -std=gnu23 \
+		  -ffreestanding
+
+CPPFLAGS := -Iinclude \
+			-MMD \
+			-MP
+
+PREFIX      = /usr
+EXEC_PREFIX = $(PREFIX)
+BOOTDIR     = /boot
+LIBDIR      = $(EXEC_PREFIX)/lib
+INCLUDEDIR  = $(PREFIX)/include
+
+SYSROOT     = "$(PWD)/sysroot"
+
+CC +=  --sysroot=$(SYSROOT)
+CC +=  -isystem=$(INCLUDEDIR)
+
+LD +=  --sysroot=$(SYSROOT)
