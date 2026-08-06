@@ -6,6 +6,7 @@ include config.def.mk
 
 CPPFLAGS := $(CPPFLAGS) -D__is_libc -I../common
 LIBK_CPPFLAGS := $(CPPFLAGS) -D__is_libk
+LIBK_CFLAGS := $(CFLAGS)
 
 OBJS := \
 	string/strlen.c \

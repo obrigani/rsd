@@ -24,7 +24,9 @@ dist: $(IMAGE_NAME)-i386-limine.iso
 .PHONY: run
 run: $(IMAGE_NAME)-i386-limine.iso
 	qemu-system-i386 -cdrom $(IMAGE_NAME)-i386-limine.iso \
-							$(QEMUFLAGS)
+							$(QEMUFLAGS) \
+							-chardev stdio,id=char0,mux=on,logfile=serial.log,signal=off \
+							-serial chardev:char0 -mon chardev=char0
 
 limine-binary/.downloaded:
 	curl -L https://github.com/Limine-Bootloader/Limine/releases/latest/download/limine-binary.tar.gz | gunzip | tar -xf -

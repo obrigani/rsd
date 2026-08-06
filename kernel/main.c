@@ -8,10 +8,12 @@
 #include <common.h>
 #include <stdio.h>
 #include <kernel/tty.h>
+#include <kernel/serial.h>
 
 void kmain(void) 
 {
 	init_term();
+	init_serial();
 
 	puts("rsd v.0.1.0-alpha");
 	puts("Copyright (C) 2026 obrigani team");

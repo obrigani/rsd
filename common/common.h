@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include <stdint.h>
+
 #ifdef __linux__
 #error "Use a cross-compiler, dumbass"
 #endif
@@ -16,3 +18,5 @@
 #endif
 
 #define NoReturn __attribute__((__noreturn__))
+
+#define AlwaysInline __attribute__((always_inline)) inline

@@ -2,13 +2,19 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 /* =================================================================================== * 
- * stdio.h - Implementation of the standard C header
+ * serial.h - see serial.c                                                             *
  * =================================================================================== */
 
 #pragma once
 
-#define EOF (-1)
+#include <sys/io.h>
 
-int printf(const char* __restrict, ...);
-int putchar(int);
-int puts(const char*);
+#define COM1 0x3f8
+
+int init_serial(void);
+
+int serial_recieved(void);
+char read_serial(void);
+int is_trans_empty(void);
+void write_serial(char a);
+

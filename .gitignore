@@ -6,3 +6,4 @@ limine-binary/
 *.xz
 *.gz
 *.tar
+*.log
