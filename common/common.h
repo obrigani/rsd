@@ -14,3 +14,5 @@
 #ifndef __i386__
 #error "Use a 32-bit cross-compiler, dumbass"
 #endif
+
+#define NoReturn __attribute__((__noreturn__))

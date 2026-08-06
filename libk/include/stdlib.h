@@ -6,7 +6,8 @@
  * =================================================================================== */
 
 #pragma once
- 
+
+#include <common.h> 
 #include <sys/cdefs.h>
 
-__attribute__((noreturn)) void abort(void);
+NoReturn void abort(void);

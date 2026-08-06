@@ -7,6 +7,8 @@ include config.def.mk
 OUTPUT = kernel.elf
 INCLUDE_DIR = include
 
+CPPFLAGS:= $(CPPFLAGS) -I../common
+
 NASMFLAGS := -f elf32
 
 LDFLAGS := -m elf_i386 \
@@ -30,26 +32,26 @@ OBJ := obj/crti.o \
 all: bin/$(OUTPUT)
 
 bin/$(OUTPUT): Makefile linker.ld $(OBJ)
-	mkdir -p "$(dir $@)"
+	mkdir -v -p "$(dir $@)"
 	$(LD) $(OBJ) $(LDFLAGS) -o $@
 
 obj/%.c.o: %.c Makefile
-	mkdir -p "$(dir $@)"
+	mkdir -v -p "$(dir $@)"
 	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 obj/%.asm.o: %.asm Makefile
-	mkdir -p "$(dir $@)"
+	mkdir -v -p "$(dir $@)"
 	nasm $(NASMFLAGS) $< -o $@
 
 obj/crtbegin.o obj/crtend.o:
 	OBJ=`$(CC) $(CFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
 obj/crti.o: crti.S Makefile
-	mkdir -p "$(dir $@)"
+	mkdir -v -p "$(dir $@)"
 	nasm $(NASMFLAGS) $< -o $@
 
 obj/crtn.o: crtn.S Makefile
-	mkdir -p "$(dir $@)"
+	mkdir -v -p "$(dir $@)"
 	nasm $(NASMFLAGS) $< -o $@
 
 .PHONY: install
@@ -57,14 +59,14 @@ install: install-kernel install-headers
 
 .PHONY: install-kernel
 install-kernel: bin/$(OUTPUT)
-	mkdir -p $(DESTDIR)$(BOOTDIR)
-	cp bin/$(OUTPUT) $(DESTDIR)$(BOOTDIR)
+	mkdir -v -p $(DESTDIR)$(BOOTDIR)
+	cp -v bin/$(OUTPUT) $(DESTDIR)$(BOOTDIR)
 
 .PHONY: install-headers
 install-headers:
-	mkdir -p $(DESTDIR)$(INCLUDEDIR)
-	cp -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/.
+	mkdir -v -p $(DESTDIR)$(INCLUDEDIR)
+	cp -v -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/.
 
 .PHONY: clean
 clean:
-	rm -fr bin obj
+	rm -v -fr bin obj

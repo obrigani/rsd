@@ -5,7 +5,7 @@
  * tty.c - Code used for the basic tty implementation using the VGA buffer             *
  * =================================================================================== */
 
-#include <kernel/common.h>
+#include <common.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>

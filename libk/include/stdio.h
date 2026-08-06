@@ -5,8 +5,6 @@
  * stdio.h - Implementation of the standard C header
  * =================================================================================== */
 
-#include <stdio.h>
-
 #define EOF (-1)
 
 int printf(const char* __restrict, ...);

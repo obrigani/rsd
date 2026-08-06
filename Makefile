@@ -14,8 +14,12 @@ HOST_CC := cc
 HOST_CFLAGS := -g -O2 -pipe
 
 .PHONY: all
-all: $(IMAGE_NAME)-i386-limine.iso
-	@echo "$(IMAGE_NAME)-i386-limine.iso built successfully"
+all: sysroot/boot/kernel.elf
+	@echo Kernel built successfully in sysroot/boot/kernel.elf
+
+.PHONY: dist
+dist: $(IMAGE_NAME)-i386-limine.iso
+	@echo ISO file build successfully in the project root
 
 .PHONY: run
 run: $(IMAGE_NAME)-i386-limine.iso
@@ -55,16 +59,17 @@ $(IMAGE_NAME)-i386-limine.iso: sysroot/boot/kernel.elf limine-binary/.built
 
 	./limine-binary/limine bios-install $(IMAGE_NAME)-i386-limine.iso
 
-	rm -fr isodir
+	rm -v -fr isodir
 
 .PHONY: clean
 clean:
 	make -I$(PWD) -C kernel clean
+	make -I$(PWD) -C libk clean
 	rm -fr $(SYSROOT)
 
 .PHONY: distclean
 distclean: 
-	rm -fr *.iso limine-binary
+	rm -v -fr *.iso limine-binary *.xz *.tar
 	
 .PHONY: bear
 bear: clean

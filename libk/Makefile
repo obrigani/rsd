@@ -4,7 +4,7 @@
 include config.def.mk
 -include config.mk
 
-CPPFLAGS := $(CPPFLAGS) -D__is_libc
+CPPFLAGS := $(CPPFLAGS) -D__is_libc -I../common
 LIBK_CPPFLAGS := $(CPPFLAGS) -D__is_libk
 
 OBJS := \
@@ -12,7 +12,11 @@ OBJS := \
 	string/memmove.c \
 	string/memcmp.c \
 	string/memset.c \
-	string/memcpy.c
+	string/memcpy.c \
+	stdio/printf.c \
+	stdio/putchar.c \
+	stdio/puts.c \
+	stdlib/abort.c
 
 LIBK_OBJS=$(OBJS:.c=.libk.o)
 
@@ -43,22 +47,22 @@ libk.a: $(LIBK_OBJS)
 
 .PHONY: clean
 clean:
-	rm -f $(BINARIES) *.a
-	rm -f $(OBJS) $(LIBK_OBJS) *.o */*.o */*/*.o
-	rm -f $(OBJS:.o=.d) $(LIBK_OBJS:.o=.d) *.d */*.d */*/*.d
+	rm -v -f $(BINARIES) *.a
+	rm -v -f $(LIBK_OBJS) 
+	rm -v -f $(LIBK_OBJS:.o=.d)
 
 .PHONY: install
 install: install-headers install-libs
 
 .PHONY: install-headers
 install-headers:
-	mkdir -p $(DESTDIR)$(INCLUDEDIR)
-	cp -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/.
+	mkdir -v -p $(DESTDIR)$(INCLUDEDIR)
+	cp -v -R --preserve=timestamps include/. $(DESTDIR)$(INCLUDEDIR)/.
 
 .PHONY: install-libs
 install-libs: $(BINARIES)
-	mkdir -p $(DESTDIR)$(LIBDIR)
-	cp $(BINARIES) $(DESTDIR)$(LIBDIR)
+	mkdir -v -p $(DESTDIR)$(LIBDIR)
+	cp -v $(BINARIES) $(DESTDIR)$(LIBDIR)
 
 # -include $(OBJS:.o=.d)
 # -include $(LIBK_OBJS:.o=.d)

@@ -3,3 +3,6 @@ config.mk
 sysroot/
 limine-binary/
 *.iso
+*.xz
+*.gz
+*.tar
