@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <kernel/tty.h>
 #include <kernel/serial.h>
+#include <kernel/gdt.h>
 
 void kmain(void) 
 {
@@ -25,4 +26,6 @@ void kmain(void)
 	puts("/ __|/ _` | | | | |/ _ \\ \\/ / ");
 	puts("\\__ | (_| | | | | | (_) >  < ");
 	puts("|___/\\__,_|_|_| |_|\\___/_/\\_\\ ");
+
+	init_gdt();
 }
