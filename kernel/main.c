@@ -21,7 +21,7 @@ void kmain(void)
 	puts("warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.");
 	puts("================================================================================");
 
-	puts("   ___  __| | | | | _____  __");
+	puts(" ___  __  | | | | | _____  __");
 	puts("/ __|/ _` | | | | |/ _ \\ \\/ / ");
 	puts("\\__ | (_| | | | | | (_) >  < ");
 	puts("|___/\\__,_|_|_| |_|\\___/_/\\_\\ ");
