@@ -30,3 +30,5 @@ CC +=  --sysroot=$(SYSROOT)
 CC +=  -isystem=$(INCLUDEDIR)
 
 LD +=  --sysroot=$(SYSROOT)
+
+BOOTBACKGROUND = rsd-banner.png

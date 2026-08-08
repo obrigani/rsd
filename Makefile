@@ -41,7 +41,7 @@ sysroot/boot/kernel.elf:
 	make DESTDIR="$(SYSROOT)" -I$(PWD) -C libk install
 	make DESTDIR="$(SYSROOT)" -I$(PWD) -C kernel install
 	mkdir -p "$(SYSROOT)$(PREFIX)/share/backgrounds"
-	cp -v assets/stallman.png "$(SYSROOT)$(PREFIX)/share/backgrounds"
+	cp -v assets/$(BOOTBACKGROUND) "$(SYSROOT)$(PREFIX)/share/backgrounds"
 	
 $(IMAGE_NAME)-i386-limine.iso: sysroot/boot/kernel.elf limine-binary/.built
 	mkdir -p isodir
@@ -56,7 +56,7 @@ $(IMAGE_NAME)-i386-limine.iso: sysroot/boot/kernel.elf limine-binary/.built
 	cp -v limine-binary/BOOTIA32.EFI isodir/EFI/BOOT/
 
 	mkdir -p isodir/usr/share/backgrounds
-	cp -v sysroot/usr/share/backgrounds/stallman.png isodir/usr/share/backgrounds
+	cp -v sysroot/usr/share/backgrounds/$(BOOTBACKGROUND) isodir/usr/share/backgrounds
 
 	xorriso -as mkisofs -R -r -J -b boot/limine/limine-bios-cd.bin \
 	        -no-emul-boot -boot-load-size 4 -boot-info-table -hfsplus \
