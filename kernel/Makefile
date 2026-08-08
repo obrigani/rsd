@@ -46,11 +46,11 @@ obj/%.asm.o: %.asm Makefile
 obj/crtbegin.o obj/crtend.o:
 	OBJ=`$(CC) $(CFLAGS) -print-file-name=$(@F)` && cp "$$OBJ" $@
 
-obj/crti.o: crti.S Makefile
+obj/crti.o: gcc-compat/crti.S Makefile
 	mkdir -v -p "$(dir $@)"
 	nasm $(NASMFLAGS) $< -o $@
 
-obj/crtn.o: crtn.S Makefile
+obj/crtn.o: gcc-compat/crtn.S Makefile
 	mkdir -v -p "$(dir $@)"
 	nasm $(NASMFLAGS) $< -o $@
 

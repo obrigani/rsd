@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: GPL-3.0-only
 
 /* =================================================================================== * 
- * tty.c - Code used for the basic tty implementation using the VGA buffer             *
+ * vga_tty.c - Code used for the basic tty implementation using the VGA buffer             *
  * =================================================================================== */
 
 #include <common.h>
