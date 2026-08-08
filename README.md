@@ -2,6 +2,7 @@
 <p align=center><img src="./assets/rsd-banner.png"></p>
 <p align=center>
 	<a href="https://codeberg.org/obrigani/rsd"><img src="https://img.shields.io/badge/codeberg-repo-blue?style=for-the-badge&logo=codeberg&logoColor=white&color=%232185D0"></a>
+	<a href="https://github.com/obrigani/rsd"><img src="https://img.shields.io/badge/github-repo-black?style=for-the-badge&logo=github&color=%23181717"></a>
 	<a href="https://spdx.org/licenses/GPL-3.0-only.html"><img src="https://img.shields.io/badge/license-GPL_v_3.0--only-blue?style=for-the-badge&logo=spdx&logoColor=white&color=%234398CC"></a>
 </p>
 
