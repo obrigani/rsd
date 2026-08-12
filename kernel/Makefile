@@ -18,7 +18,7 @@ LDFLAGS := -m elf_i386 \
 		   -L$(SYSROOT)$(LIBDIR) \
 		   -lk 
 		   
-override SRCFILES := $(shell find -L . -type f 2>/dev/null | LC_ALL=C sort)
+override SRCFILES := $(shell find -L ./ -type f 2>/dev/null | LC_ALL=C sort)
 override CFILES := $(filter %.c,$(SRCFILES))
 override NASMFILES := $(filter %.asm,$(SRCFILES))
 OBJ := $(addprefix obj/,$(CFILES:.c=.c.o) $(NASMFILES:.asm=.asm.o))

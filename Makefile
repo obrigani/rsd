@@ -83,3 +83,10 @@ bear: clean
 	make DESTDIR="$(SYSROOT)" -I$(PWD) -C kernel install-headers
 	bear --output libk/compile_commands.json -- make DESTDIR="$(SYSROOT)" -I$(PWD) -C libk install
 	bear --output kernel/compile_commands.json -- make DESTDIR="$(SYSROOT)" -I$(PWD) -C kernel 
+
+.PHONY: lint
+lint:
+	# I know about the existence of a .clang-tidy file, I'm just too lazy
+	clang-tidy -checks=-*,readability-*,-readability-magic-numbers,-readability-identifier-length,-readability-braces-around-statements,bugprone-*,performance-* \
+			    `find -L ./ -type f \(  -iname \*.c -o -iname \*.h \) 2>/dev/null | \
+				LC_ALL=C sort` -- -I$(PWD)/kernel/include -I$(PWD)/libk/include -I$(PWD)/common
